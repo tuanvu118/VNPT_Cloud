@@ -1,8 +1,6 @@
 # BÁO CÁO LÝ THUYẾT: CƠ BẢN VỀ ẢO HÓA VÀ CLOUD
 
 * **Nội dung:** Tìm hiểu các khái niệm cơ bản về ảo hóa, tài nguyên ảo (vCPU, vRAM, vDisk, vNIC), các cơ chế cấp phát tài nguyên (Overcommit, Thin Provisioning) và cấu trúc phần cứng CPU (Socket, Core).
-* **Người thực hiện:** [Họ và tên của bạn]
-* **Vai trò:** Thực tập sinh
 
 ---
 
@@ -89,12 +87,3 @@ Khi tạo một máy ảo (Virtual Machine - VM), Hypervisor sẽ cấp phát ch
   * *Ví dụ:* Một máy chủ có 2 Sockets, mỗi chip CPU có 16 Cores, hỗ trợ Hyper-Threading (2 Threads/Core) sẽ có tổng cộng:  
     $$2 \times 16 \times 2 = 64 \text{ Logical Processors}$$
     Đồng nghĩa với việc máy chủ này có tối đa 64 luồng xử lý độc lập có thể cung cấp làm vCPU cho các máy ảo.
-
----
-
-## 5. Kết luận và Hướng tiếp cận tiếp theo
-
-Việc hiểu rõ các khái niệm lý thuyết trên giúp tôi:
-1. Xác định đúng tài nguyên cần cấp phát cho máy ảo khi làm lab (tránh cấp phát quá đà gây nghẽn máy Host, hoặc cấp phát quá ít gây giật lag máy ảo).
-2. Lựa chọn cấu hình mạng (NAT, Bridge, Host-Only) phù hợp để các máy ảo kết nối được với nhau và kết nối ra ngoài Internet.
-3. Sẵn sàng cho phần thực hành tạo máy ảo và cấu hình hệ thống mạng tiếp theo.
