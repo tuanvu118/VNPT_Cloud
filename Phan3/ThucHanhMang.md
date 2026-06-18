@@ -158,10 +158,18 @@ Thiết lập tường lửa chặt chẽ trên máy chủ cơ sở dữ liệu 
 ### Bước 2.4: Bắt và phân tích gói tin với `tcpdump` & `Wireshark`
 1.  **Chạy tcpdump trên VM1 (Load Balancer) để bắt lưu lượng mạng đi vào cổng 80:**
     ```bash
-    sudo tcpdump -i any port 80 -w ../images/network_capture.pcap
+    # Di chuyển về thư mục home
+    cd /home/tuanvu
+    # Bắt gói tin cổng 80 và lưu vào file capture.pcap
+    sudo tcpdump -i any port 80 -w capture.pcap
     ```
-2.  Dùng trình duyệt từ máy Host truy cập vào web để tạo luồng dữ liệu, sau đó dừng `tcpdump`.
-3.  Tải file `network_capture.pcap` về máy Host và phân tích quá trình bắt tay 3 bước của TCP trên phần mềm Wireshark.
+2.  Dùng trình duyệt từ máy Host truy cập vào web `http://192.168.134.128/` để tạo luồng dữ liệu, sau đó nhấn `Ctrl + C` để dừng `tcpdump`.
+3.  Tải file `capture.pcap` về máy Host (chạy trên CMD/PowerShell của Windows):
+    ```bash
+    scp tuanvu@192.168.134.128:/home/tuanvu/capture.pcap D:\BaoCao\images\capture.pcap
+    ```
+4.  Mở file `capture.pcap` trên phần mềm Wireshark ở máy Host và phân tích quá trình bắt tay 3 bước của TCP.
+
 
 ---
 
@@ -177,25 +185,17 @@ Thiết lập tường lửa chặt chẽ trên máy chủ cơ sở dữ liệu 
 
 ### Ảnh 2: Cấu hình định tuyến tĩnh (Static Route) trên Windows & Linux
 *   **Mô tả nội dung cần chụp:** 
-    *   Trên máy Host Windows: Chụp màn hình CMD chạy lệnh `route print` hiển thị dải IP `192.168.134.0/24` đã được định tuyến qua Gateway.
-    *   Trên máy ảo Linux VM1/VM2: Chụp màn hình Terminal chạy lệnh `ip route show` hiển thị bảng định tuyến.
+    *   Trên máy Host Windows: Chụp màn hình CMD chạy lệnh `route print` hiển thị dải IP `172.16.10.0/24` đã được định tuyến qua Gateway `192.168.134.128` (nằm ở mục Persistent Routes).
+    *   Trên VM1 (Linux): Chụp màn hình Terminal chạy lệnh `ip route show` hiển thị bảng định tuyến.
 *   **Hình ảnh minh chứng:**
 
-![Cấu hình định tuyến tĩnh trên Host và VM](../images/02_static_route_config.png)
+![Cấu hình định tuyến tĩnh trên Windows](../images/02_static_route_windows.png)
+
+![Cấu hình định tuyến tĩnh trên Linux](../images/02_static_route_linux.png)
 
 ---
 
-###  Ảnh 3: Cấu hình HAProxy và Kết quả Cân bằng tải hoạt động
-*   **Mô tả nội dung cần chụp:** 
-    *   Trình duyệt trên máy Host truy cập vào IP của Load Balancer cổng 80 (`http://192.168.134.128/`). Khi refresh thấy kết quả thay đổi luân phiên giữa Web 1 và Web 2.
-    *   **Minh chứng tính HA:** Chạy lệnh `docker stop web_app_1` trên VM1, tải lại trang web vẫn truy cập bình thường qua container `web_app_2`.
-*   **Hình ảnh minh chứng:**
-
-![Kiểm tra hoạt động Load Balancer và tính sẵn sàng cao HA](../images/03_load_balancing_result.png)
-
----
-
-###  Ảnh 4: Tường lửa iptables trên VM2 bảo vệ Database thành công
+###  Ảnh 3: Tường lửa iptables trên VM2 bảo vệ Database thành công
 *   **Mô tả nội dung cần chụp:** 
     *   Trên VM2: Chụp màn hình Terminal gõ lệnh `sudo iptables -L -v -n` hiển thị quy tắc DROP mặc định và chỉ cho phép IP VM1 kết nối cổng 5432.
     *   Trên máy Host: Chụp màn hình CMD chạy lệnh `telnet 192.168.134.100 5432` hoặc ping báo kết nối thất bại (do bị chặn), chứng minh tường lửa chặn đúng đối tượng.
@@ -205,7 +205,7 @@ Thiết lập tường lửa chặt chẽ trên máy chủ cơ sở dữ liệu 
 
 ---
 
-### Ảnh 5: Bắt gói tin và phân tích trên Wireshark
+### Ảnh 4: Bắt gói tin và phân tích trên Wireshark
 *   **Mô tả nội dung cần chụp:** Giao diện phần mềm Wireshark mở file `.pcap` bắt được từ lệnh `tcpdump` trên VM1. Hiển thị rõ tiến trình bắt tay 3 bước của TCP (SYN, SYN-ACK, ACK) và gói tin yêu cầu HTTP GET.
 *   **Hình ảnh minh chứng:**
 
