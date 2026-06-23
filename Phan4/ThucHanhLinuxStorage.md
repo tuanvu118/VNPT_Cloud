@@ -351,7 +351,3 @@ Trong phần này, ta tiến hành xác thực ứng dụng được xây dựng
 ---
 **Ảnh 7: Cấu hình phân chia dải mạng độc lập giữa App và Database**
 *   **Mô tả nội dung cần chụp:** Chụp màn hình chạy lệnh `ip addr` trên cả hai máy ảo: VM1 hiển thị 2 địa chỉ IP thuộc 2 dải mạng khác nhau, VM2 chỉ hiển thị IP dải `192.168.100.100` kết nối trực tiếp đến VM1.
-*   **Hình ảnh minh chứng:**
-
-![Cấu hình phân dải mạng độc lập giữa App và DB](../images/07_network_isolation.png)
----
