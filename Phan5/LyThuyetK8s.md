@@ -120,7 +120,11 @@ Vì các Pod trong K8s có tính chất tạm thời (Ephemeral) - dữ liệu g
 
 ### a. Khái niệm PV, PVC và mối quan hệ
 *   **PersistentVolume (PV - Phân vùng lưu trữ vật lý):**
-    *   Là một tài nguyên lưu trữ thực tế trong cụm Cluster do Quản trị viên hệ thống (Admin) cấu hình sẵn trước. PV đại diện cho một không gian lưu trữ vật lý cụ thể (như thư mục NFS, ổ cứng LVM cục bộ, ổ cứng đám mây AWS EBS...). Nó tồn tại độc lập hoàn toàn với vòng đời của các Pod.
+    *   Là một tài nguyên lưu trữ thực tế trong cụm Cluster do Quản trị viên hệ thống (Admin) cấu hình sẵn trước. PV đại diện cho một không gian lưu trữ vật lý cụ thể. Các loại PV phổ biến bao gồm:
+        *   **hostPath:** Gắn kết một thư mục hoặc tệp tin từ hệ thống tệp của Node máy chủ trực tiếp vào Pod. Thích hợp cho môi trường phát triển hoặc chạy cụm đơn node.
+        *   **Local Persistent Volume / LVM:** Gắn kết các phân vùng ổ cứng cục bộ (như ổ đĩa LVM đã chia tách) trên các Node để có tốc độ đọc ghi tối đa.
+        *   **Network Storage (NFS, Ceph, GlusterFS...):** Hệ thống lưu trữ phân tán qua mạng, cho phép Pod di chuyển linh hoạt giữa các Node khác nhau mà không sợ mất kết nối dữ liệu.
+    *   PV tồn tại độc lập hoàn toàn với vòng đời của các Pod.
 *   **PersistentVolumeClaim (PVC - Yêu cầu cấp phát lưu trữ):**
     *   Là yêu cầu xin cấp phát tài nguyên lưu trữ do Lập trình viên (User) tạo ra. PVC mô tả các yêu cầu cụ thể như: *"Tôi cần một ổ đĩa dung lượng 5GB, có quyền đọc ghi đồng thời (ReadWriteMany)"*.
 *   **Mối quan hệ:**

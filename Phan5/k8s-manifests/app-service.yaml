@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-app-service
+  namespace: default
+spec:
+  selector:
+    app: fastapi-app
+  ports:
+    - protocol: TCP
+      port: 80         # Cổng tiếp nhận truy cập từ bên ngoài máy ảo
+      targetPort: 8000 # Cổng chạy thực tế của ứng dụng bên trong container
+  type: LoadBalancer # Cân bằng tải tự động của K3s (Klipper LB)
